@@ -13,6 +13,16 @@ const config: Config = {
           DEFAULT: '#FE3058',
           light: '#FFA0B2',
         },
+        mint: {
+          DEFAULT: '#5EEDB8',
+          light: '#A0F5D8',
+          dark: '#3DD9A0',
+        },
+        cyan: {
+          DEFAULT: '#5DD9E8',
+          light: '#A0EBF5',
+          dark: '#3DC5D6',
+        },
         background: '#FDFDFD',
         text: {
           primary: '#000B13',

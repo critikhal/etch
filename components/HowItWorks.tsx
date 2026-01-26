@@ -66,7 +66,7 @@ export default function HowItWorks() {
             >
               {/* Content */}
               <div className="flex-1 text-center lg:text-left">
-                <span className="text-primary text-6xl font-bold opacity-20">
+                <span className="text-6xl font-bold text-primary opacity-30">
                   {step.number}
                 </span>
                 <h3 className="text-3xl md:text-4xl font-medium text-text-primary mb-4 -mt-4">

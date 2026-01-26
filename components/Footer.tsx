@@ -1,4 +1,5 @@
 import { Twitter, Instagram, Linkedin } from 'lucide-react'
+import AnimatedLogo from './AnimatedLogo'
 
 const socialLinks = [
   { icon: Twitter, href: '#', label: 'Twitter' },
@@ -19,10 +20,8 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
-              <span className="text-white font-bold text-xl">E</span>
-            </div>
-            <span className="text-2xl font-semibold text-text-primary">Etch</span>
+            <AnimatedLogo size={40} loop={false} duration={0} />
+            <span className="text-2xl font-semibold text-text-primary">etch</span>
           </div>
 
           {/* Links */}
