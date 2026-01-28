@@ -106,7 +106,7 @@ export default function AnimatedLogo({
 
       animationSequence.forEach((pathId, index) => {
         const timeout = setTimeout(() => {
-          setVisiblePaths(prev => new Set([...prev, pathId]))
+          setVisiblePaths(prev => new Set([...Array.from(prev), pathId]))
         }, startDelay + (index * pathDelay))
         timeouts.push(timeout)
       })
