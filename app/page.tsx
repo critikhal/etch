@@ -83,6 +83,53 @@ function DashedPath({ className = '' }: { className?: string }) {
   )
 }
 
+// Horizontal flowing path for section transitions
+function FlowingPath({ className = '', flip = false }: { className?: string; flip?: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 1200 120"
+      className={className}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ transform: flip ? 'scaleX(-1)' : undefined }}
+      preserveAspectRatio="none"
+    >
+      <path
+        d="M0 60 Q200 20 400 60 Q600 100 800 60 Q1000 20 1200 60"
+        stroke="#FE3058"
+        strokeWidth="2"
+        strokeDasharray="10 6"
+        strokeLinecap="round"
+        opacity="0.3"
+      />
+      <circle cx="400" cy="60" r="4" fill="#FE3058" opacity="0.5" />
+      <circle cx="800" cy="60" r="4" fill="#78E8EC" opacity="0.5" />
+    </svg>
+  )
+}
+
+// Organic curved connector path for How It Works steps
+function StepConnectorPath({ className = '' }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 200 100"
+      className={className}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      preserveAspectRatio="none"
+    >
+      <path
+        d="M0 50 Q50 20 100 50 Q150 80 200 50"
+        stroke="#FE3058"
+        strokeWidth="2"
+        strokeDasharray="8 5"
+        strokeLinecap="round"
+        opacity="0.4"
+      />
+    </svg>
+  )
+}
+
 // Video phone mockup component
 function VideoPhoneMockup({
   videoSrc,
@@ -156,8 +203,8 @@ const heroSlides = [
   {
     id: 'discover',
     image: '/app-home.png',
-    headline: 'Your personal map of places worth visiting',
-    subheadline: 'Explore places and lists from friends, locals, and creators. Find your next favorite spot.',
+    headline: 'Discover lists from people who love what you love',
+    subheadline: 'Find curated lists from friends, locals, and creators who share your taste. Your next favorite place is already on someone\'s list.',
     badge: 'Discover'
   },
   {
@@ -235,11 +282,6 @@ function HeroCarousel() {
       </div>
       <div className="absolute right-0 top-40 w-48 h-96 opacity-30 pointer-events-none transform scale-x-[-1]">
         <DashedPath className="w-full h-full" />
-      </div>
-
-      {/* Balloon easter egg */}
-      <div className="absolute top-28 right-[12%] z-20">
-        <EtchBalloon size={100} className="opacity-40 hover:opacity-100" />
       </div>
 
       <div className="max-w-5xl mx-auto px-6 py-12 sm:py-16 text-center relative z-10">
@@ -448,10 +490,18 @@ export default function EtchLandingV4() {
 
       {/* Problem/Solution Section */}
       <section
-        className="bg-coral-red py-24 px-6 relative"
+        className="bg-coral-red py-24 px-6 relative overflow-hidden"
         aria-labelledby="problem-heading"
       >
-        <div className="max-w-5xl mx-auto">
+        {/* Organic decorative paths */}
+        <div className="absolute left-0 top-10 w-40 h-80 opacity-15 pointer-events-none hidden lg:block">
+          <DashedPath className="w-full h-full" />
+        </div>
+        <div className="absolute right-0 bottom-10 w-40 h-80 opacity-15 pointer-events-none hidden lg:block transform scale-x-[-1]">
+          <DashedPath className="w-full h-full" />
+        </div>
+
+        <div className="max-w-5xl mx-auto relative z-10">
           <AnimatedSection className="text-center mb-12">
             <p className="text-white/70 text-xs font-medium uppercase tracking-widest mb-4">
               The Problem
@@ -578,23 +628,25 @@ export default function EtchLandingV4() {
         </div>
       </section>
 
+      {/* Flowing path transition from Features to How It Works */}
+      <div className="bg-snow-white relative">
+        <div className="absolute inset-x-0 top-0 h-24 pointer-events-none overflow-hidden">
+          <FlowingPath className="w-full h-full" />
+        </div>
+      </div>
+
       {/* How It Works Section */}
       <section
         id="how-it-works"
         className="bg-snow-white py-24 px-6 relative"
         aria-labelledby="how-it-works-heading"
       >
-        {/* Decorative path */}
-        <div className="absolute left-1/2 top-0 -translate-x-1/2 w-1 h-full pointer-events-none">
-          <svg className="w-full h-full" viewBox="0 0 4 800" preserveAspectRatio="none">
-            <path
-              d="M2 0 L2 800"
-              stroke="#FE3058"
-              strokeWidth="2"
-              strokeDasharray="8 6"
-              opacity="0.2"
-            />
-          </svg>
+        {/* Organic decorative paths */}
+        <div className="absolute left-8 top-20 w-32 h-64 opacity-20 pointer-events-none hidden md:block">
+          <DashedPath className="w-full h-full" />
+        </div>
+        <div className="absolute right-8 bottom-32 w-32 h-64 opacity-20 pointer-events-none hidden md:block transform scale-x-[-1]">
+          <DashedPath className="w-full h-full" />
         </div>
 
         <div className="max-w-5xl mx-auto relative z-10">
@@ -610,36 +662,50 @@ export default function EtchLandingV4() {
             </h2>
           </AnimatedSection>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
-            {[
-              {
-                step: '01',
-                title: 'Copy a link',
-                desc: 'From Instagram, TikTok, or any app where you found a place worth remembering.'
-              },
-              {
-                step: '02',
-                title: 'Paste in Etch',
-                desc: 'We automatically detect the place, pull photos, and show you on the map.'
-              },
-              {
-                step: '03',
-                title: 'Add to a list',
-                desc: 'Create collections like "Date Night" or "Coffee Spots" and add your notes.'
-              }
-            ].map((item, i) => (
-              <AnimatedSection key={i} delay={i * 150} className="text-center">
-                <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-midnight-navy text-snow-white text-xl font-bold mb-5">
-                  {item.step}
+          <div className="relative mb-16">
+            {/* Curved connector paths between steps - visible on md+ */}
+            <div className="hidden md:block absolute top-7 left-0 right-0 pointer-events-none">
+              <div className="max-w-3xl mx-auto flex justify-center">
+                <div className="flex-1 px-8">
+                  <StepConnectorPath className="w-full h-8" />
                 </div>
-                <h3 className="text-xl font-bold text-midnight-navy mb-3">
-                  {item.title}
-                </h3>
-                <p className="text-midnight-navy/70 leading-relaxed">
-                  {item.desc}
-                </p>
-              </AnimatedSection>
-            ))}
+                <div className="flex-1 px-8">
+                  <StepConnectorPath className="w-full h-8" />
+                </div>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {[
+                {
+                  step: '01',
+                  title: 'Copy a link',
+                  desc: 'From Instagram, TikTok, or any app where you found a place worth remembering.'
+                },
+                {
+                  step: '02',
+                  title: 'Paste in Etch',
+                  desc: 'We automatically detect the place, pull photos, and show you on the map.'
+                },
+                {
+                  step: '03',
+                  title: 'Add to a list',
+                  desc: 'Create collections like "Date Night" or "Coffee Spots" and add your notes.'
+                }
+              ].map((item, i) => (
+                <AnimatedSection key={i} delay={i * 150} className="text-center relative z-10">
+                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-midnight-navy text-snow-white text-xl font-bold mb-5 shadow-lg">
+                    {item.step}
+                  </div>
+                  <h3 className="text-xl font-bold text-midnight-navy mb-3">
+                    {item.title}
+                  </h3>
+                  <p className="text-midnight-navy/70 leading-relaxed">
+                    {item.desc}
+                  </p>
+                </AnimatedSection>
+              ))}
+            </div>
           </div>
 
           {/* Video Demo */}
@@ -651,12 +717,24 @@ export default function EtchLandingV4() {
         </div>
       </section>
 
+      {/* Flowing path transition to Community Lists */}
+      <div className="bg-mint-green relative">
+        <div className="absolute inset-x-0 top-0 h-20 pointer-events-none overflow-hidden">
+          <FlowingPath className="w-full h-full" flip />
+        </div>
+      </div>
+
       {/* Community Lists Section */}
       <section
-        className="bg-mint-green py-24 px-6"
+        className="bg-mint-green py-24 px-6 relative overflow-hidden"
         aria-labelledby="discover-heading"
       >
-        <div className="max-w-5xl mx-auto">
+        {/* Organic decorative paths */}
+        <div className="absolute right-4 top-16 w-28 h-56 opacity-20 pointer-events-none hidden lg:block">
+          <DashedPath className="w-full h-full" />
+        </div>
+
+        <div className="max-w-5xl mx-auto relative z-10">
           <AnimatedSection className="text-center mb-12">
             <p className="text-midnight-navy/50 text-xs font-medium uppercase tracking-widest mb-4">
               Discover
