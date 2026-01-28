@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import Image from 'next/image'
 import AnimatedLogo from '@/components/AnimatedLogo'
-import { Smartphone, FileText, Map, Link2, Coffee, Heart, Car, Utensils, Camera, PersonStanding, Users, MapPin, Star } from 'lucide-react'
+import { Smartphone, ListPlus, Compass, Bookmark, Share2, Coffee, Heart, Car, Utensils, Camera, PersonStanding, Users, MapPin, Star } from 'lucide-react'
 
 // Hook for scroll-triggered animations
 function useInView(threshold = 0.1) {
@@ -58,34 +58,28 @@ function AnimatedSection({
   )
 }
 
-// Phone mockup component
-function PhoneMockup({
-  imageSrc,
-  alt,
-  className = '',
-  priority = false
-}: {
-  imageSrc: string
-  alt: string
-  className?: string
-  priority?: boolean
-}) {
+// Decorative dashed path SVG
+function DashedPath({ className = '' }: { className?: string }) {
   return (
-    <div className={`relative ${className}`}>
-      <div className="bg-gradient-to-b from-gray-700 to-gray-800 rounded-[2.5rem] p-2 shadow-2xl">
-        <div className="bg-black rounded-[2rem] overflow-hidden aspect-[9/19] relative">
-          <Image
-            src={imageSrc}
-            alt={alt}
-            fill
-            className="object-cover object-top"
-            priority={priority}
-          />
-        </div>
-        {/* Notch */}
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 w-20 h-5 bg-black rounded-full" />
-      </div>
-    </div>
+    <svg
+      viewBox="0 0 400 600"
+      className={className}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M50 0 Q100 100 80 200 Q60 300 150 350 Q240 400 200 500 Q160 600 250 650"
+        stroke="#FE3058"
+        strokeWidth="3"
+        strokeDasharray="12 8"
+        strokeLinecap="round"
+        opacity="0.4"
+      />
+      {/* Decorative dots along the path */}
+      <circle cx="80" cy="200" r="6" fill="#FE3058" opacity="0.6" />
+      <circle cx="150" cy="350" r="6" fill="#78E8EC" opacity="0.6" />
+      <circle cx="200" cy="500" r="6" fill="#6CFBAB" opacity="0.6" />
+    </svg>
   )
 }
 
@@ -110,7 +104,6 @@ function VideoPhoneMockup({
             className="w-full h-full object-cover object-top"
           />
         </div>
-        {/* Notch */}
         <div className="absolute top-4 left-1/2 -translate-x-1/2 w-20 h-5 bg-black rounded-full" />
       </div>
     </div>
@@ -131,11 +124,7 @@ function EtchBalloon({
   const handleClick = () => {
     setClickCount(prev => prev + 1)
     setIsFloating(true)
-
-    // Reset after animation
-    setTimeout(() => {
-      setIsFloating(false)
-    }, 3000)
+    setTimeout(() => setIsFloating(false), 3000)
   }
 
   return (
@@ -162,13 +151,241 @@ function EtchBalloon({
   )
 }
 
-export default function EtchLandingV35() {
+// Hero carousel data
+const heroSlides = [
+  {
+    id: 'discover',
+    image: '/app-home.png',
+    headline: 'Your personal map of places worth visiting',
+    subheadline: 'Explore places and lists from friends, locals, and creators. Find your next favorite spot.',
+    badge: 'Discover'
+  },
+  {
+    id: 'import',
+    image: '/app-list.png',
+    headline: 'Turn posts into real places',
+    subheadline: 'Paste links from Instagram, TikTok, or Maps. Etch detects the place and adds it to your list.',
+    badge: 'Import'
+  },
+  {
+    id: 'map',
+    image: '/app-map.png',
+    headline: 'See everywhere you want to go',
+    subheadline: 'All your saved places on one map. Filter by list, category, or neighborhood.',
+    badge: 'Map'
+  },
+  {
+    id: 'curate',
+    image: '/app-profile.png',
+    headline: 'Build lists for everything',
+    subheadline: 'Date nights, weekend trips, favorite cafés. Create collections and add personal notes.',
+    badge: 'Curate'
+  }
+]
+
+// Hero Carousel Component
+function HeroCarousel() {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [isHovered, setIsHovered] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
     setIsLoaded(true)
   }, [])
 
+  // Auto-rotate every 5 seconds
+  useEffect(() => {
+    if (isHovered) return
+
+    const interval = setInterval(() => {
+      setActiveIndex(prev => (prev + 1) % heroSlides.length)
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [isHovered])
+
+  const goToSlide = useCallback((index: number) => {
+    setActiveIndex(index)
+  }, [])
+
+  const getSlidePosition = (index: number) => {
+    const diff = index - activeIndex
+    const total = heroSlides.length
+
+    // Handle wrapping
+    let position = diff
+    if (diff > total / 2) position = diff - total
+    if (diff < -total / 2) position = diff + total
+
+    return position
+  }
+
+  const currentSlide = heroSlides[activeIndex]
+
+  return (
+    <section
+      className="min-h-screen bg-midnight-navy pt-20 relative overflow-hidden"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      aria-labelledby="hero-heading"
+    >
+      {/* Decorative dashed paths */}
+      <div className="absolute left-0 top-20 w-48 h-96 opacity-30 pointer-events-none">
+        <DashedPath className="w-full h-full" />
+      </div>
+      <div className="absolute right-0 top-40 w-48 h-96 opacity-30 pointer-events-none transform scale-x-[-1]">
+        <DashedPath className="w-full h-full" />
+      </div>
+
+      {/* Balloon easter egg */}
+      <div className="absolute top-28 right-[12%] z-20">
+        <EtchBalloon size={100} className="opacity-40 hover:opacity-100" />
+      </div>
+
+      <div className="max-w-5xl mx-auto px-6 py-12 sm:py-16 text-center relative z-10">
+        {/* Badge */}
+        <div
+          className={`inline-flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full mb-6 transition-all duration-700 ${
+            isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`}
+        >
+          <span className="w-2 h-2 bg-mint-green rounded-full animate-pulse" />
+          <span className="text-gray-300 text-sm">Now available in Saudi Arabia</span>
+        </div>
+
+        {/* Dynamic Headline */}
+        <div className="min-h-[100px] sm:min-h-[120px] md:min-h-[80px] flex flex-col justify-center mb-4">
+          <h1
+            id="hero-heading"
+            key={currentSlide.id + '-headline'}
+            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-snow-white leading-tight animate-fade-in`}
+          >
+            {currentSlide.headline}
+          </h1>
+        </div>
+
+        {/* Dynamic Subheadline */}
+        <div className="min-h-[60px] sm:min-h-[50px] flex items-center justify-center mb-8">
+          <p
+            key={currentSlide.id + '-subheadline'}
+            className={`text-base sm:text-lg text-gray-400 max-w-2xl mx-auto animate-fade-in`}
+          >
+            {currentSlide.subheadline}
+          </p>
+        </div>
+
+        {/* CTA Buttons */}
+        <div
+          className={`flex flex-col sm:flex-row items-center justify-center gap-4 mb-10 transition-all duration-700 delay-300 ${
+            isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`}
+        >
+          <a
+            href="#download"
+            className="bg-coral-red text-snow-white px-8 py-4 rounded-full text-lg font-semibold hover:opacity-90 transition-all hover:scale-105 shadow-lg shadow-coral-red/30"
+          >
+            Start Building Your Map
+          </a>
+          <a
+            href="#how-it-works"
+            className="bg-white/10 text-snow-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/20 transition-all"
+          >
+            See How It Works
+          </a>
+        </div>
+
+        {/* Phone Carousel */}
+        <div
+          className={`relative h-[420px] sm:h-[480px] md:h-[520px] transition-all duration-1000 delay-400 ${
+            isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          <div className="relative w-full h-full flex items-center justify-center">
+            {heroSlides.map((slide, index) => {
+              const position = getSlidePosition(index)
+              const isActive = index === activeIndex
+              const isVisible = Math.abs(position) <= 1
+
+              if (!isVisible) return null
+
+              return (
+                <button
+                  key={slide.id}
+                  onClick={() => goToSlide(index)}
+                  className={`absolute transition-all duration-700 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-coral-red focus-visible:ring-offset-2 focus-visible:ring-offset-midnight-navy rounded-[3rem] ${
+                    isActive ? 'cursor-default' : 'cursor-pointer hover:opacity-90'
+                  }`}
+                  style={{
+                    transform: `translateX(${position * 160}px) scale(${isActive ? 1 : 0.7})`,
+                    zIndex: isActive ? 10 : 5,
+                    opacity: isActive ? 1 : 0.5,
+                  }}
+                  disabled={isActive}
+                  aria-label={isActive ? `Current slide: ${slide.badge}` : `Go to ${slide.badge}`}
+                >
+                  <div className={`relative ${isActive ? 'animate-float' : ''}`}>
+                    {/* Phone Frame */}
+                    <div className="w-44 sm:w-52 md:w-60">
+                      <div className="bg-gradient-to-b from-gray-700 to-gray-800 rounded-[2.5rem] p-2 shadow-2xl">
+                        <div className="bg-black rounded-[2rem] overflow-hidden aspect-[9/19] relative">
+                          <Image
+                            src={slide.image}
+                            alt={`Etch app ${slide.badge} screen`}
+                            fill
+                            className="object-cover object-top"
+                            priority={index === 0}
+                          />
+                        </div>
+                        <div className="absolute top-4 left-1/2 -translate-x-1/2 w-20 h-5 bg-black rounded-full" />
+                      </div>
+                    </div>
+
+                    {/* Glow effect for active */}
+                    {isActive && (
+                      <>
+                        <div className="absolute -inset-4 bg-coral-red/20 rounded-[4rem] blur-3xl -z-10 animate-glow" />
+                        <div className="absolute -inset-8 bg-coral-red/10 rounded-[5rem] blur-3xl -z-20 animate-glow-slow" />
+                      </>
+                    )}
+
+                    {/* Feature badge */}
+                    <div
+                      className={`absolute -bottom-10 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap ${
+                        isActive
+                          ? 'bg-coral-red text-snow-white'
+                          : 'bg-white/10 text-gray-400'
+                      }`}
+                    >
+                      {slide.badge}
+                    </div>
+                  </div>
+                </button>
+              )
+            })}
+          </div>
+
+          {/* Dot indicators */}
+          <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 flex gap-2">
+            {heroSlides.map((slide, index) => (
+              <button
+                key={slide.id + '-dot'}
+                onClick={() => goToSlide(index)}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  index === activeIndex
+                    ? 'bg-coral-red w-6'
+                    : 'bg-white/30 hover:bg-white/50 w-2'
+                }`}
+                aria-label={`Go to slide ${index + 1}: ${slide.badge}`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default function EtchLandingV4() {
   return (
     <div className="font-sans antialiased overflow-x-hidden">
       {/* Navigation */}
@@ -191,115 +408,8 @@ export default function EtchLandingV35() {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section
-        className="min-h-screen bg-midnight-navy pt-20 relative overflow-hidden"
-        aria-labelledby="hero-heading"
-      >
-        {/* Decorative balloon - top right */}
-        <div className="absolute top-28 right-[12%] z-20">
-          <EtchBalloon size={100} className="opacity-40 hover:opacity-100" />
-        </div>
-
-        <div className="max-w-5xl mx-auto px-6 py-20 text-center relative z-10">
-          {/* Badge */}
-          <div
-            className={`inline-flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full mb-8 transition-all duration-700 ${
-              isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}
-          >
-            <span className="w-2 h-2 bg-mint-green rounded-full animate-pulse" />
-            <span className="text-gray-300 text-sm">Now available in Saudi Arabia</span>
-          </div>
-
-          {/* Headline */}
-          <h1
-            id="hero-heading"
-            className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-snow-white mb-4 leading-tight transition-all duration-700 delay-100 ${
-              isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}
-          >
-            You&apos;ve saved a hundred places
-            <br />
-            <span className="text-gray-500">on Instagram.</span>
-          </h1>
-
-          {/* Subheadline */}
-          <p
-            className={`text-xl sm:text-2xl md:text-3xl text-white/90 mb-4 transition-all duration-700 delay-200 ${
-              isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}
-          >
-            How many have you actually visited?
-          </p>
-
-          <p
-            className={`text-base text-gray-400 max-w-2xl mx-auto mb-12 transition-all duration-700 delay-300 ${
-              isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}
-          >
-            Stop losing places in your saved posts. Etch turns links into a personal map
-            so you can finally go to those cafés, restaurants, and hidden gems.
-          </p>
-
-          {/* CTA Buttons */}
-          <div
-            className={`flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 transition-all duration-700 delay-400 ${
-              isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}
-          >
-            <a
-              href="#download"
-              className="bg-coral-red text-snow-white px-8 py-4 rounded-full text-lg font-semibold hover:opacity-90 transition-all hover:scale-105 shadow-lg shadow-coral-red/30"
-            >
-              Start Building Your Map
-            </a>
-            <a
-              href="#how-it-works"
-              className="bg-white/10 text-snow-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/20 transition-all"
-            >
-              See How It Works
-            </a>
-          </div>
-
-          {/* Phone Mockups */}
-          <div
-            className={`relative max-w-4xl mx-auto transition-all duration-1000 delay-500 ${
-              isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}
-          >
-            <div className="flex items-center justify-center gap-4 md:gap-8">
-              {/* Left phone - smaller */}
-              <div className="hidden sm:block w-40 md:w-48 opacity-60 -translate-y-8">
-                <PhoneMockup
-                  imageSrc="/app-list.png"
-                  alt="Etch app list view showing saved places"
-                />
-              </div>
-
-              {/* Center phone - main, with floating animation */}
-              <div className="w-56 md:w-64 animate-float relative">
-                <PhoneMockup
-                  imageSrc="/app-home.png"
-                  alt="Etch app home screen"
-                  priority
-                />
-                {/* Glow effect */}
-                <div className="absolute -inset-4 bg-coral-red/20 rounded-[4rem] blur-3xl -z-10 animate-glow" />
-                <div className="absolute -inset-8 bg-coral-red/10 rounded-[5rem] blur-3xl -z-20 animate-glow-slow" />
-              </div>
-
-              {/* Right phone - smaller */}
-              <div className="hidden sm:block w-40 md:w-48 opacity-60 -translate-y-8">
-                <PhoneMockup
-                  imageSrc="/app-map.png"
-                  alt="Etch app map view with saved locations"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero Carousel */}
+      <HeroCarousel />
 
       {/* Social Proof Section */}
       <section className="bg-midnight-navy py-12 border-t border-white/10">
@@ -402,7 +512,7 @@ export default function EtchLandingV35() {
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* Features Section - Updated with App Store copy */}
       <section
         className="bg-cyan py-24 px-6"
         aria-labelledby="features-heading"
@@ -420,27 +530,32 @@ export default function EtchLandingV35() {
             </h2>
           </AnimatedSection>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
               {
                 Icon: Smartphone,
-                title: 'Import from Anywhere',
-                desc: 'Paste links from Instagram, TikTok, Google Maps. We extract the place automatically.'
+                title: 'Turn Posts into Places',
+                desc: 'Paste links from social apps or Maps and let Etch detect the places for you automatically.'
               },
               {
-                Icon: FileText,
-                title: 'Add Personal Notes',
-                desc: 'Remember what to order, best time to visit, or who recommended it.'
+                Icon: ListPlus,
+                title: 'Create & Curate Lists',
+                desc: 'Build lists for cafés, date nights, or full trips. Add personal notes like what to order.'
               },
               {
-                Icon: Map,
-                title: 'See Your Map',
-                desc: 'All your saved places visualized. Filter by list, category, or neighborhood.'
+                Icon: Compass,
+                title: 'Discover Where to Go',
+                desc: 'Explore lists from friends, locals, and creators. Search by city, category, or keyword.'
               },
               {
-                Icon: Link2,
-                title: 'Share with Friends',
-                desc: 'Send lists with a link. Plan trips together or share your favorites.'
+                Icon: Bookmark,
+                title: 'Save What Matters',
+                desc: 'Save places from any list into your own collections. Use lists as living guides.'
+              },
+              {
+                Icon: Share2,
+                title: 'Share with Everyone',
+                desc: 'Share lists for trips or occasions. Links open directly in-app or as a web preview.'
               }
             ].map((feature, i) => (
               <AnimatedSection key={i} delay={i * 100}>
@@ -463,13 +578,26 @@ export default function EtchLandingV35() {
         </div>
       </section>
 
-      {/* How It Works Section - Snow White background */}
+      {/* How It Works Section */}
       <section
         id="how-it-works"
-        className="bg-snow-white py-24 px-6"
+        className="bg-snow-white py-24 px-6 relative"
         aria-labelledby="how-it-works-heading"
       >
-        <div className="max-w-5xl mx-auto">
+        {/* Decorative path */}
+        <div className="absolute left-1/2 top-0 -translate-x-1/2 w-1 h-full pointer-events-none">
+          <svg className="w-full h-full" viewBox="0 0 4 800" preserveAspectRatio="none">
+            <path
+              d="M2 0 L2 800"
+              stroke="#FE3058"
+              strokeWidth="2"
+              strokeDasharray="8 6"
+              opacity="0.2"
+            />
+          </svg>
+        </div>
+
+        <div className="max-w-5xl mx-auto relative z-10">
           <AnimatedSection className="text-center mb-12">
             <p className="text-midnight-navy/50 text-xs font-medium uppercase tracking-widest mb-4">
               How It Works
@@ -582,12 +710,18 @@ export default function EtchLandingV35() {
         className="bg-midnight-navy py-24 px-6 relative overflow-hidden"
         aria-labelledby="cta-heading"
       >
-        {/* Decorative balloon - bottom left */}
+        {/* Decorative paths */}
+        <div className="absolute left-0 bottom-0 w-32 h-64 opacity-20 pointer-events-none">
+          <DashedPath className="w-full h-full" />
+        </div>
+        <div className="absolute right-0 top-0 w-32 h-64 opacity-20 pointer-events-none transform scale-x-[-1] rotate-180">
+          <DashedPath className="w-full h-full" />
+        </div>
+
+        {/* Balloon easter eggs */}
         <div className="absolute bottom-16 left-[8%] z-20">
           <EtchBalloon size={120} className="opacity-40 hover:opacity-100" />
         </div>
-
-        {/* Decorative balloon - top right, smaller */}
         <div className="absolute top-20 right-[5%] z-20">
           <EtchBalloon size={60} className="opacity-30 hover:opacity-100" />
         </div>
@@ -714,6 +848,17 @@ export default function EtchLandingV35() {
           }
         }
 
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
         .animate-float {
           animation: float 6s ease-in-out infinite;
         }
@@ -724,6 +869,10 @@ export default function EtchLandingV35() {
 
         .animate-glow-slow {
           animation: glow-slow 6s ease-in-out infinite;
+        }
+
+        .animate-fade-in {
+          animation: fade-in 0.5s ease-out forwards;
         }
       `}</style>
     </div>
