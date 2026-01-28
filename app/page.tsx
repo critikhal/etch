@@ -89,26 +89,80 @@ function PhoneMockup({
   )
 }
 
-// Hot air balloon easter egg
-function HotAirBalloon({ className = '' }: { className?: string }) {
+// Video phone mockup component
+function VideoPhoneMockup({
+  videoSrc,
+  className = ''
+}: {
+  videoSrc: string
+  className?: string
+}) {
   return (
-    <svg
-      width="60"
-      height="78"
-      viewBox="0 0 60 78"
-      className={className}
-      aria-hidden="true"
-    >
-      <ellipse cx="30" cy="28" rx="26" ry="28" fill="#4A90D9" opacity="0.9"/>
-      <ellipse cx="22" cy="28" rx="18" ry="24" fill="#F7C94B" opacity="0.85"/>
-      <ellipse cx="30" cy="30" rx="14" ry="20" fill="#FE3058" opacity="0.9"/>
-      <path d="M20 52 L40 52 L36 60 L24 60 Z" fill="#4CAF50"/>
-      <rect x="24" y="60" width="12" height="10" fill="#8B5A2B" rx="2"/>
-    </svg>
+    <div className={`relative ${className}`}>
+      <div className="bg-gradient-to-b from-gray-700 to-gray-800 rounded-[2.5rem] p-2 shadow-2xl">
+        <div className="bg-black rounded-[2rem] overflow-hidden aspect-[9/19] relative">
+          <video
+            src={videoSrc}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover object-top"
+          />
+        </div>
+        {/* Notch */}
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 w-20 h-5 bg-black rounded-full" />
+      </div>
+    </div>
   )
 }
 
-export default function EtchLandingV3() {
+// Interactive Balloon Easter Egg
+function EtchBalloon({
+  className = '',
+  size = 80
+}: {
+  className?: string
+  size?: number
+}) {
+  const [isFloating, setIsFloating] = useState(false)
+  const [clickCount, setClickCount] = useState(0)
+
+  const handleClick = () => {
+    setClickCount(prev => prev + 1)
+    setIsFloating(true)
+
+    // Reset after animation
+    setTimeout(() => {
+      setIsFloating(false)
+    }, 3000)
+  }
+
+  return (
+    <button
+      onClick={handleClick}
+      className={`cursor-pointer transition-all duration-1000 hover:scale-110 ${className}`}
+      style={{
+        transform: isFloating
+          ? `translateY(-${200 + clickCount * 50}px) rotate(${clickCount * 15}deg) scale(${1 + clickCount * 0.1})`
+          : 'translateY(0) rotate(0deg) scale(1)',
+        opacity: isFloating ? 0 : 1,
+      }}
+      aria-label="Click the balloon for a surprise!"
+      title="Click me!"
+    >
+      <Image
+        src="/balloon.png"
+        alt="Etch balloon"
+        width={size}
+        height={size}
+        className="drop-shadow-lg"
+      />
+    </button>
+  )
+}
+
+export default function EtchLandingV35() {
   const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
@@ -119,18 +173,18 @@ export default function EtchLandingV3() {
     <div className="font-sans antialiased overflow-x-hidden">
       {/* Navigation */}
       <nav
-        className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200"
+        className="fixed top-0 left-0 right-0 z-50 bg-snow-white/95 backdrop-blur-md border-b border-gray-200"
         role="navigation"
         aria-label="Main navigation"
       >
         <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
           <a href="/" className="flex items-center gap-2" aria-label="Etch home">
             <AnimatedLogo size={32} />
-            <span className="font-bold text-xl text-gray-900">etch</span>
+            <span className="font-bold text-xl text-midnight-navy">etch</span>
           </a>
           <a
             href="#download"
-            className="bg-gray-900 text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors"
+            className="bg-midnight-navy text-snow-white px-5 py-2.5 rounded-full text-sm font-medium hover:opacity-90 transition-all"
           >
             Download
           </a>
@@ -139,12 +193,12 @@ export default function EtchLandingV3() {
 
       {/* Hero Section */}
       <section
-        className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 pt-20 relative overflow-hidden"
+        className="min-h-screen bg-midnight-navy pt-20 relative overflow-hidden"
         aria-labelledby="hero-heading"
       >
-        {/* Decorative balloon */}
-        <div className="absolute top-32 right-[15%] opacity-15">
-          <HotAirBalloon />
+        {/* Decorative balloon - top right */}
+        <div className="absolute top-28 right-[12%] z-20">
+          <EtchBalloon size={100} className="opacity-40 hover:opacity-100" />
         </div>
 
         <div className="max-w-5xl mx-auto px-6 py-20 text-center relative z-10">
@@ -154,14 +208,14 @@ export default function EtchLandingV3() {
               isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}
           >
-            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+            <span className="w-2 h-2 bg-mint-green rounded-full animate-pulse" />
             <span className="text-gray-300 text-sm">Now available in Saudi Arabia</span>
           </div>
 
           {/* Headline */}
           <h1
             id="hero-heading"
-            className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 leading-tight transition-all duration-700 delay-100 ${
+            className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-snow-white mb-4 leading-tight transition-all duration-700 delay-100 ${
               isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}
           >
@@ -196,13 +250,13 @@ export default function EtchLandingV3() {
           >
             <a
               href="#download"
-              className="bg-primary text-white px-8 py-4 rounded-full text-lg font-semibold hover:opacity-90 transition-all hover:scale-105 shadow-lg shadow-primary/30"
+              className="bg-coral-red text-snow-white px-8 py-4 rounded-full text-lg font-semibold hover:opacity-90 transition-all hover:scale-105 shadow-lg shadow-coral-red/30"
             >
               Start Building Your Map
             </a>
             <a
               href="#how-it-works"
-              className="bg-white/10 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/20 transition-all"
+              className="bg-white/10 text-snow-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/20 transition-all"
             >
               See How It Works
             </a>
@@ -231,8 +285,8 @@ export default function EtchLandingV3() {
                   priority
                 />
                 {/* Glow effect */}
-                <div className="absolute -inset-4 bg-primary/20 rounded-[4rem] blur-3xl -z-10 animate-glow" />
-                <div className="absolute -inset-8 bg-primary/10 rounded-[5rem] blur-3xl -z-20 animate-glow-slow" />
+                <div className="absolute -inset-4 bg-coral-red/20 rounded-[4rem] blur-3xl -z-10 animate-glow" />
+                <div className="absolute -inset-8 bg-coral-red/10 rounded-[5rem] blur-3xl -z-20 animate-glow-slow" />
               </div>
 
               {/* Right phone - smaller */}
@@ -248,33 +302,33 @@ export default function EtchLandingV3() {
       </section>
 
       {/* Social Proof Section */}
-      <section className="bg-gray-950 py-12 border-t border-gray-800">
+      <section className="bg-midnight-navy py-12 border-t border-white/10">
         <AnimatedSection className="max-w-4xl mx-auto px-6">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-16 text-center">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
-                <Users className="w-6 h-6 text-primary" />
+              <div className="w-12 h-12 bg-coral-red/20 rounded-full flex items-center justify-center">
+                <Users className="w-6 h-6 text-coral-red" />
               </div>
               <div className="text-left">
-                <p className="text-2xl font-bold text-white">10K+</p>
+                <p className="text-2xl font-bold text-snow-white">10K+</p>
                 <p className="text-sm text-gray-400">Active explorers</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
-                <MapPin className="w-6 h-6 text-primary" />
+              <div className="w-12 h-12 bg-coral-red/20 rounded-full flex items-center justify-center">
+                <MapPin className="w-6 h-6 text-coral-red" />
               </div>
               <div className="text-left">
-                <p className="text-2xl font-bold text-white">250K+</p>
+                <p className="text-2xl font-bold text-snow-white">250K+</p>
                 <p className="text-sm text-gray-400">Places saved</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
-                <Star className="w-6 h-6 text-primary" />
+              <div className="w-12 h-12 bg-coral-red/20 rounded-full flex items-center justify-center">
+                <Star className="w-6 h-6 text-coral-red" />
               </div>
               <div className="text-left">
-                <p className="text-2xl font-bold text-white">4.9</p>
+                <p className="text-2xl font-bold text-snow-white">4.9</p>
                 <p className="text-sm text-gray-400">App Store rating</p>
               </div>
             </div>
@@ -284,7 +338,7 @@ export default function EtchLandingV3() {
 
       {/* Problem/Solution Section */}
       <section
-        className="bg-primary py-24 px-6 relative"
+        className="bg-coral-red py-24 px-6 relative"
         aria-labelledby="problem-heading"
       >
         <div className="max-w-5xl mx-auto">
@@ -294,7 +348,7 @@ export default function EtchLandingV3() {
             </p>
             <h2
               id="problem-heading"
-              className="text-3xl sm:text-4xl md:text-5xl font-bold text-white"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold text-snow-white"
             >
               Social media says go.
               <br />
@@ -325,8 +379,8 @@ export default function EtchLandingV3() {
             </AnimatedSection>
 
             <AnimatedSection delay={200}>
-              <div className="bg-white rounded-2xl p-8 shadow-xl h-full">
-                <p className="text-primary text-xs font-medium uppercase tracking-wider mb-6">
+              <div className="bg-snow-white rounded-2xl p-8 shadow-xl h-full">
+                <p className="text-coral-red text-xs font-medium uppercase tracking-wider mb-6">
                   With Etch
                 </p>
                 <ul className="space-y-4" role="list">
@@ -336,8 +390,8 @@ export default function EtchLandingV3() {
                     'Add notes like "get the matcha"',
                     'Lists that actually get used'
                   ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3 text-gray-700">
-                      <span className="text-green-500" aria-hidden="true">✓</span>
+                    <li key={i} className="flex items-start gap-3 text-midnight-navy">
+                      <span className="text-mint-green" aria-hidden="true">✓</span>
                       {item}
                     </li>
                   ))}
@@ -350,17 +404,17 @@ export default function EtchLandingV3() {
 
       {/* Features Section */}
       <section
-        className="bg-gradient-to-b from-blue-500 to-blue-600 py-24 px-6"
+        className="bg-cyan py-24 px-6"
         aria-labelledby="features-heading"
       >
         <div className="max-w-5xl mx-auto">
           <AnimatedSection className="text-center mb-12">
-            <p className="text-white/70 text-xs font-medium uppercase tracking-widest mb-4">
+            <p className="text-midnight-navy/60 text-xs font-medium uppercase tracking-widest mb-4">
               Features
             </p>
             <h2
               id="features-heading"
-              className="text-3xl sm:text-4xl md:text-5xl font-bold text-white"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold text-midnight-navy"
             >
               Everything you need to explore
             </h2>
@@ -390,16 +444,16 @@ export default function EtchLandingV3() {
               }
             ].map((feature, i) => (
               <AnimatedSection key={i} delay={i * 100}>
-                <div className="bg-white/10 rounded-2xl p-6 border border-white/20 h-full hover:bg-white/15 transition-colors">
+                <div className="bg-midnight-navy/10 rounded-2xl p-6 border border-midnight-navy/20 h-full hover:bg-midnight-navy/15 transition-colors">
                   <feature.Icon
                     size={36}
-                    className="text-white mb-4"
+                    className="text-midnight-navy mb-4"
                     aria-hidden="true"
                   />
-                  <h3 className="text-lg font-bold text-white mb-2">
+                  <h3 className="text-lg font-bold text-midnight-navy mb-2">
                     {feature.title}
                   </h3>
-                  <p className="text-white/70 text-sm leading-relaxed">
+                  <p className="text-midnight-navy/70 text-sm leading-relaxed">
                     {feature.desc}
                   </p>
                 </div>
@@ -409,26 +463,26 @@ export default function EtchLandingV3() {
         </div>
       </section>
 
-      {/* How It Works Section */}
+      {/* How It Works Section - Snow White background */}
       <section
         id="how-it-works"
-        className="bg-yellow-400 py-24 px-6"
+        className="bg-snow-white py-24 px-6"
         aria-labelledby="how-it-works-heading"
       >
         <div className="max-w-5xl mx-auto">
           <AnimatedSection className="text-center mb-12">
-            <p className="text-black/50 text-xs font-medium uppercase tracking-widest mb-4">
+            <p className="text-midnight-navy/50 text-xs font-medium uppercase tracking-widest mb-4">
               How It Works
             </p>
             <h2
               id="how-it-works-heading"
-              className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold text-midnight-navy"
             >
               Three taps to organized
             </h2>
           </AnimatedSection>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-8 mb-16">
             {[
               {
                 step: '01',
@@ -447,26 +501,23 @@ export default function EtchLandingV3() {
               }
             ].map((item, i) => (
               <AnimatedSection key={i} delay={i * 150} className="text-center">
-                <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gray-900 text-white text-xl font-bold mb-5">
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-midnight-navy text-snow-white text-xl font-bold mb-5">
                   {item.step}
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">
+                <h3 className="text-xl font-bold text-midnight-navy mb-3">
                   {item.title}
                 </h3>
-                <p className="text-gray-700 leading-relaxed">
+                <p className="text-midnight-navy/70 leading-relaxed">
                   {item.desc}
                 </p>
               </AnimatedSection>
             ))}
           </div>
 
-          {/* Phone demo */}
-          <AnimatedSection delay={300} className="mt-16 flex justify-center">
-            <div className="w-64">
-              <PhoneMockup
-                imageSrc="/app-profile.png"
-                alt="Etch app profile showing saved lists"
-              />
+          {/* Video Demo */}
+          <AnimatedSection delay={300} className="flex justify-center">
+            <div className="w-72 md:w-80">
+              <VideoPhoneMockup videoSrc="/import-demo.mp4" />
             </div>
           </AnimatedSection>
         </div>
@@ -474,21 +525,21 @@ export default function EtchLandingV3() {
 
       {/* Community Lists Section */}
       <section
-        className="bg-green-500 py-24 px-6"
+        className="bg-mint-green py-24 px-6"
         aria-labelledby="discover-heading"
       >
         <div className="max-w-5xl mx-auto">
           <AnimatedSection className="text-center mb-12">
-            <p className="text-white/70 text-xs font-medium uppercase tracking-widest mb-4">
+            <p className="text-midnight-navy/50 text-xs font-medium uppercase tracking-widest mb-4">
               Discover
             </p>
             <h2
               id="discover-heading"
-              className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold text-midnight-navy mb-4"
             >
               Lists for everything
             </h2>
-            <p className="text-white/80 text-lg max-w-2xl mx-auto">
+            <p className="text-midnight-navy/70 text-lg max-w-2xl mx-auto">
               From coffee runs to road trips, explore curated lists from friends, locals, and creators.
             </p>
           </AnimatedSection>
@@ -504,17 +555,17 @@ export default function EtchLandingV3() {
             ].map((list, i) => (
               <AnimatedSection key={i} delay={i * 75}>
                 <button
-                  className="w-full bg-white rounded-xl p-4 flex items-center gap-4 hover:shadow-lg transition-shadow text-left"
+                  className="w-full bg-snow-white rounded-xl p-4 flex items-center gap-4 hover:shadow-lg transition-shadow text-left"
                   aria-label={`View ${list.title} by ${list.author}`}
                 >
                   <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <list.Icon size={24} className="text-gray-600" aria-hidden="true" />
+                    <list.Icon size={24} className="text-midnight-navy" aria-hidden="true" />
                   </div>
                   <div className="min-w-0">
-                    <h4 className="font-semibold text-gray-900 truncate">
+                    <h4 className="font-semibold text-midnight-navy truncate">
                       {list.title}
                     </h4>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-midnight-navy/60">
                       {list.places} places · by {list.author}
                     </p>
                   </div>
@@ -528,12 +579,17 @@ export default function EtchLandingV3() {
       {/* CTA Section */}
       <section
         id="download"
-        className="bg-gray-950 py-24 px-6 relative overflow-hidden"
+        className="bg-midnight-navy py-24 px-6 relative overflow-hidden"
         aria-labelledby="cta-heading"
       >
-        {/* Decorative balloon */}
-        <div className="absolute bottom-10 left-[10%] opacity-15">
-          <HotAirBalloon />
+        {/* Decorative balloon - bottom left */}
+        <div className="absolute bottom-16 left-[8%] z-20">
+          <EtchBalloon size={120} className="opacity-40 hover:opacity-100" />
+        </div>
+
+        {/* Decorative balloon - top right, smaller */}
+        <div className="absolute top-20 right-[5%] z-20">
+          <EtchBalloon size={60} className="opacity-30 hover:opacity-100" />
         </div>
 
         <AnimatedSection className="max-w-3xl mx-auto text-center relative z-10">
@@ -541,7 +597,7 @@ export default function EtchLandingV3() {
 
           <h2
             id="cta-heading"
-            className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mt-8 mb-4"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold text-snow-white mt-8 mb-4"
           >
             Start discovering
           </h2>
@@ -594,23 +650,23 @@ export default function EtchLandingV3() {
 
       {/* Footer */}
       <footer
-        className="bg-gray-900 border-t border-gray-800 py-12 px-6"
+        className="bg-midnight-navy border-t border-white/10 py-12 px-6"
         role="contentinfo"
       >
         <div className="max-w-5xl mx-auto text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
             <AnimatedLogo size={24} />
-            <span className="font-bold text-white">etch</span>
+            <span className="font-bold text-snow-white">etch</span>
           </div>
 
           <nav className="flex justify-center gap-6 mb-4" aria-label="Footer navigation">
-            <a href="#" className="text-gray-400 text-sm hover:text-white transition-colors">
+            <a href="#" className="text-gray-400 text-sm hover:text-snow-white transition-colors">
               Privacy
             </a>
-            <a href="#" className="text-gray-400 text-sm hover:text-white transition-colors">
+            <a href="#" className="text-gray-400 text-sm hover:text-snow-white transition-colors">
               Terms
             </a>
-            <a href="#" className="text-gray-400 text-sm hover:text-white transition-colors">
+            <a href="#" className="text-gray-400 text-sm hover:text-snow-white transition-colors">
               Contact
             </a>
           </nav>
