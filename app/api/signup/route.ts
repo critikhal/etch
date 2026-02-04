@@ -6,6 +6,14 @@ const AIRTABLE_TABLE_NAME = process.env.AIRTABLE_TABLE_NAME || 'Signups';
 
 export async function POST(request: NextRequest) {
   try {
+    // Check environment variables
+    if (!AIRTABLE_API_TOKEN || !AIRTABLE_BASE_ID) {
+      return NextResponse.json(
+        { error: 'Server configuration error', missing: { token: !AIRTABLE_API_TOKEN, baseId: !AIRTABLE_BASE_ID } },
+        { status: 500 }
+      );
+    }
+
     const body = await request.json();
     const { name, email, device, sources, otherSource, hasLists } = body;
 
@@ -55,7 +63,7 @@ export async function POST(request: NextRequest) {
       const errorData = await response.json();
       console.error('Airtable error:', errorData);
       return NextResponse.json(
-        { error: 'Failed to save signup' },
+        { error: 'Failed to save signup', details: errorData },
         { status: 500 }
       );
     }
@@ -65,7 +73,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Signup error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Internal server error', details: String(error) },
       { status: 500 }
     );
   }
