@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import Image from 'next/image'
 import AnimatedLogo from '@/components/AnimatedLogo'
-import { Smartphone, ListPlus, Compass, Bookmark, Share2, Coffee, Heart, Car, Utensils, Camera, PersonStanding, Users, MapPin, Star } from 'lucide-react'
+import { Smartphone, ListPlus, Compass, Bookmark, Share2, Coffee, Heart, Car, Utensils, Camera, PersonStanding, Users, MapPin, Globe } from 'lucide-react'
 
 // Hook for scroll-triggered animations
 function useInView(threshold = 0.1) {
@@ -456,14 +456,23 @@ export default function EtchLandingV4() {
       {/* Social Proof Section */}
       <section className="bg-midnight-navy py-12 border-t border-white/10">
         <AnimatedSection className="max-w-4xl mx-auto px-6">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-16 text-center">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12 text-center flex-wrap">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-coral-red/20 rounded-full flex items-center justify-center">
                 <Users className="w-6 h-6 text-coral-red" />
               </div>
               <div className="text-left">
-                <p className="text-2xl font-bold text-snow-white">10K+</p>
-                <p className="text-sm text-gray-400">Active explorers</p>
+                <p className="text-2xl font-bold text-snow-white">200+</p>
+                <p className="text-sm text-gray-400">Users</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-coral-red/20 rounded-full flex items-center justify-center">
+                <ListPlus className="w-6 h-6 text-coral-red" />
+              </div>
+              <div className="text-left">
+                <p className="text-2xl font-bold text-snow-white">150+</p>
+                <p className="text-sm text-gray-400">Lists</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -471,17 +480,17 @@ export default function EtchLandingV4() {
                 <MapPin className="w-6 h-6 text-coral-red" />
               </div>
               <div className="text-left">
-                <p className="text-2xl font-bold text-snow-white">250K+</p>
-                <p className="text-sm text-gray-400">Places saved</p>
+                <p className="text-2xl font-bold text-snow-white">3000+</p>
+                <p className="text-sm text-gray-400">Places</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-coral-red/20 rounded-full flex items-center justify-center">
-                <Star className="w-6 h-6 text-coral-red" />
+                <Globe className="w-6 h-6 text-coral-red" />
               </div>
               <div className="text-left">
-                <p className="text-2xl font-bold text-snow-white">4.9</p>
-                <p className="text-sm text-gray-400">App Store rating</p>
+                <p className="text-2xl font-bold text-snow-white">100+</p>
+                <p className="text-sm text-gray-400">Cities</p>
               </div>
             </div>
           </div>

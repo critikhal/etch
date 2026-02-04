@@ -167,10 +167,6 @@ export default function EtchEarlyAccessForm() {
     return (
       <div className="min-h-screen flex items-center justify-center p-6" style={{ backgroundColor: colors.coral }}>
         <div className="max-w-md w-full text-center">
-          <div className="mb-8">
-            <EtchLogo size={100} duration={2000} />
-          </div>
-
           <div className="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center" style={{ backgroundColor: colors.mint }}>
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={colors.navy} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="20 6 9 17 4 12"></polyline>
@@ -186,7 +182,7 @@ export default function EtchEarlyAccessForm() {
 
           <div className="p-4 rounded-xl mb-8" style={{ backgroundColor: 'rgba(255,255,255,0.15)' }}>
             <p className="text-white text-sm">
-              Welcome to the community of <strong>200+ explorers</strong> already using Etch!
+              Welcome to the community of <strong>200+ explorers</strong> already using etch!
             </p>
           </div>
 
@@ -262,11 +258,11 @@ export default function EtchEarlyAccessForm() {
               Get early access
             </h2>
             <p className="text-gray-600">
-              Join 200+ explorers already using Etch. We&apos;ll send you the download link.
+              Join <strong className="text-coral-red">200+</strong> explorers already using etch. We&apos;ll send you the download link.
             </p>
           </div>
 
-          <EtchDash color={colors.coral} width={100} />
+          <EtchDash color={colors.coral} width={465} />
 
           <div className="mt-6 space-y-6">
             {/* Name */}
@@ -434,12 +430,6 @@ export default function EtchEarlyAccessForm() {
             </p>
           </div>
 
-          {/* Mobile social proof */}
-          <div className="lg:hidden mt-10 p-4 rounded-xl" style={{ backgroundColor: `${colors.coral}10`, border: `2px dashed ${colors.coral}` }}>
-            <p className="text-sm text-center" style={{ color: colors.coral }}>
-              <strong>200+ users</strong> are already exploring with Etch
-            </p>
-          </div>
         </div>
       </div>
     </div>
