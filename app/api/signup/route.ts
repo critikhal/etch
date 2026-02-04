@@ -1,15 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const AIRTABLE_API_TOKEN = process.env.AIRTABLE_API_TOKEN;
-const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
-const AIRTABLE_TABLE_NAME = process.env.AIRTABLE_TABLE_NAME || 'Signups';
-
 export async function POST(request: NextRequest) {
   try {
+    // Read environment variables inside the function for serverless compatibility
+    const AIRTABLE_API_TOKEN = process.env.AIRTABLE_API_TOKEN;
+    const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
+    const AIRTABLE_TABLE_NAME = process.env.AIRTABLE_TABLE_NAME || 'Signups';
+
     // Check environment variables
     if (!AIRTABLE_API_TOKEN || !AIRTABLE_BASE_ID) {
       return NextResponse.json(
-        { error: 'Server configuration error', missing: { token: !AIRTABLE_API_TOKEN, baseId: !AIRTABLE_BASE_ID } },
+        { error: 'Server configuration error' },
         { status: 500 }
       );
     }
@@ -63,7 +64,7 @@ export async function POST(request: NextRequest) {
       const errorData = await response.json();
       console.error('Airtable error:', errorData);
       return NextResponse.json(
-        { error: 'Failed to save signup', details: errorData },
+        { error: 'Failed to save signup' },
         { status: 500 }
       );
     }
