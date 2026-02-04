@@ -243,23 +243,6 @@ export default function EtchEarlyAccessForm() {
           </p>
         </div>
 
-        {/* Social proof */}
-        <div className="p-6 rounded-2xl" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
-          <div className="flex items-center gap-4 mb-4">
-            <div className="flex -space-x-2">
-              {['A', 'B', 'C', 'D'].map((e, i) => (
-                <div key={i} className="w-8 h-8 rounded-full flex items-center justify-center text-sm" style={{ backgroundColor: colors.white }}>
-                  {e}
-                </div>
-              ))}
-            </div>
-            <span className="text-white font-bold">200+ early users</span>
-          </div>
-          <p className="text-white opacity-80 text-sm">
-            &quot;Finally, all my saved spots in one place!&quot; — Early user from Riyadh
-          </p>
-        </div>
-
         {/* Bottom branding */}
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full" style={{ backgroundColor: colors.white }}></div>
