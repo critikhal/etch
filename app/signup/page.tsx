@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 // Official Etch colors
 const colors = {
@@ -176,7 +177,7 @@ export default function EtchEarlyAccessForm() {
             </svg>
           </div>
 
-          <h2 className="text-3xl font-bold text-white mb-4" style={{ fontFamily: "'Baloo 2', cursive" }}>
+          <h2 className="text-3xl font-bold text-white mb-4" >
             You&apos;re in, {name.split(' ')[0]}!
           </h2>
           <p className="text-white opacity-90 mb-6">
@@ -204,12 +205,12 @@ export default function EtchEarlyAccessForm() {
       {/* Left side - Branding */}
       <div className="hidden lg:flex lg:w-5/12 flex-col justify-between p-12" style={{ backgroundColor: colors.coral }}>
         <div>
-          <div className="flex items-center gap-4 mb-12">
+          <Link href="/" className="flex items-center gap-4 mb-12 hover:opacity-90 transition-opacity">
             <EtchLogo size={56} duration={2400} />
-            <span className="text-4xl font-bold text-white" style={{ fontFamily: "'Baloo 2', cursive" }}>etch</span>
-          </div>
+            <span className="font-logo text-4xl font-bold text-white">etch</span>
+          </Link>
 
-          <h1 className="text-4xl font-bold text-white leading-tight mb-6" style={{ fontFamily: "'Baloo 2', cursive" }}>
+          <h1 className="text-4xl font-bold text-white leading-tight mb-6" >
             Social media says go.<br/>
             <span style={{ color: colors.cyan }}>We show you where.</span>
           </h1>
@@ -251,13 +252,13 @@ export default function EtchEarlyAccessForm() {
       <div className="flex-1 flex items-start justify-center p-6 lg:p-12 overflow-auto">
         <div className="w-full max-w-lg py-8">
           {/* Mobile logo */}
-          <div className="lg:hidden flex items-center gap-3 mb-8">
+          <Link href="/" className="lg:hidden flex items-center gap-3 mb-8 hover:opacity-90 transition-opacity">
             <EtchLogo size={48} duration={2400} />
-            <span className="text-3xl font-bold" style={{ fontFamily: "'Baloo 2', cursive", color: colors.coral }}>etch</span>
-          </div>
+            <span className="font-logo text-3xl font-bold text-coral-red">etch</span>
+          </Link>
 
           <div className="mb-6">
-            <h2 className="text-3xl font-bold mb-3" style={{ color: colors.navy, fontFamily: "'Baloo 2', cursive" }}>
+            <h2 className="text-3xl font-bold mb-3" style={{ color: colors.navy }}>
               Get early access
             </h2>
             <p className="text-gray-600">
@@ -414,8 +415,7 @@ export default function EtchEarlyAccessForm() {
               className="w-full py-4 rounded-xl font-bold text-white transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3"
               style={{
                 backgroundColor: colors.coral,
-                fontFamily: "'Baloo 2', cursive",
-                fontSize: '18px'
+                                fontSize: '18px'
               }}
             >
               {isSubmitting ? (

@@ -29,6 +29,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: ['var(--font-league-spartan)', 'system-ui', 'sans-serif'],
+        logo: ['var(--font-baloo-2)', 'cursive'],
       },
     },
   },

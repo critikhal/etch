@@ -323,10 +323,10 @@ function HeroCarousel() {
           }`}
         >
           <a
-            href="#download"
+            href="/signup"
             className="bg-coral-red text-snow-white px-8 py-4 rounded-full text-lg font-semibold hover:opacity-90 transition-all hover:scale-105 shadow-lg shadow-coral-red/30"
           >
-            Start Building Your Map
+            Get Early Access
           </a>
           <a
             href="#how-it-works"
@@ -439,13 +439,13 @@ export default function EtchLandingV4() {
         <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
           <a href="/" className="flex items-center gap-2" aria-label="Etch home">
             <AnimatedLogo size={32} />
-            <span className="font-bold text-xl text-midnight-navy">etch</span>
+            <span className="font-logo font-bold text-xl text-midnight-navy">etch</span>
           </a>
           <a
-            href="#download"
-            className="bg-midnight-navy text-snow-white px-5 py-2.5 rounded-full text-sm font-medium hover:opacity-90 transition-all"
+            href="/signup"
+            className="bg-coral-red text-snow-white px-5 py-2.5 rounded-full text-sm font-medium hover:opacity-90 transition-all"
           >
-            Download
+            Get Early Access
           </a>
         </div>
       </nav>
@@ -817,6 +817,14 @@ export default function EtchLandingV4() {
             Join thousands of explorers saving and sharing their favorite places.
           </p>
 
+          {/* Early Access CTA */}
+          <a
+            href="/signup"
+            className="inline-block bg-coral-red text-snow-white px-10 py-4 rounded-full text-lg font-semibold hover:opacity-90 transition-all hover:scale-105 shadow-lg shadow-coral-red/30 mb-8"
+          >
+            Get Early Access
+          </a>
+
           {/* Official App Store Badges */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
             <a
@@ -868,7 +876,7 @@ export default function EtchLandingV4() {
         <div className="max-w-5xl mx-auto text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
             <AnimatedLogo size={24} />
-            <span className="font-bold text-snow-white">etch</span>
+            <span className="font-logo font-bold text-snow-white">etch</span>
           </div>
 
           <nav className="flex justify-center gap-6 mb-4" aria-label="Footer navigation">

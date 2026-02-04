@@ -1,10 +1,17 @@
 import type { Metadata } from 'next'
-import { League_Spartan } from 'next/font/google'
+import { League_Spartan, Baloo_2 } from 'next/font/google'
 import './globals.css'
 
 const leagueSpartan = League_Spartan({
   subsets: ['latin'],
   variable: '--font-league-spartan',
+  display: 'swap',
+})
+
+const baloo2 = Baloo_2({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-baloo-2',
   display: 'swap',
 })
 
@@ -19,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={leagueSpartan.variable}>
+    <html lang="en" className={`${leagueSpartan.variable} ${baloo2.variable}`}>
       <body className="font-sans antialiased">{children}</body>
     </html>
   )
